@@ -7,9 +7,11 @@ public class MySubscriber<T> implements Subscriber<T> {
 	
 	private Subscription subscription;
 	private final String name;
+	private final int interval;
 	
-	public MySubscriber(String name) {
+	public MySubscriber(String name, int interval) {
 		this.name = name;
+		this.interval = interval;
 	}
 
 	@Override
@@ -26,9 +28,9 @@ public class MySubscriber<T> implements Subscriber<T> {
 
 	@Override
 	public void onNext(T item) {
-		System.out.println(name + ": " + Thread.currentThread().getName() + ": " + item);
+		System.out.println(name + ": " + Thread.currentThread().getName() + ": " + item + ", interval: " + this.interval);
 		try {
-			Thread.sleep(50);
+			Thread.sleep(this.interval);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

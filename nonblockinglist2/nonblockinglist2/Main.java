@@ -50,16 +50,24 @@ public class Main {
 
 		@Override
 		public void run() {
-			Subscriber<Integer> subscriber_1 = new MySubscriber<>("subsc-1");
+			Subscriber<Integer> subscriber_1 = new MySubscriber<>("subsc-1", 0);
 			publisher.subscribe(subscriber_1);
 			
-			Subscriber<Integer> subscriber_2 = new MySubscriber<>("subsc-2");
+			Subscriber<Integer> subscriber_2 = new MySubscriber<>("subsc-2", 0);
 			publisher.subscribe(subscriber_2);
 			
-			Subscriber<Integer> subscriber_3 = new MySubscriber<>("subsc-3");
+			Subscriber<Integer> subscriber_3 = new MySubscriber<>("subsc-3", 0);
 			publisher.subscribe(subscriber_3);
 			
-			IntStream.range(0, 5).forEach(i->publisher.submit(i));
+			IntStream.range(0, 5).forEach(i->{
+				publisher.submit(i);
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 			
 		}
 	}
