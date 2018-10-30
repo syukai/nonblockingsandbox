@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +38,7 @@ public class Main {
 			TimeUnit.MILLISECONDS.sleep(300);
 			System.out.println("callable finished.");
 			// ここでshutdownしたらどうなる？ 
-			executorService.shutdownNow();
+//			executorService.shutdownNow();
 			// -> ここでexecutorServiceが終了するので次のexecuteが失敗する
 			//    java.util.concurrent.RejectedExecutionException
 			return "Task's execution";
@@ -96,6 +98,29 @@ public class Main {
 		System.out.println("shutdown!");
 		executorService.shutdown();
 		
-		System.out.println("End Of Main");
+		System.out.println("End Of ExecutorService");
+		
+		CyclicBarrier barrier = new CyclicBarrier(3, ()-> {System.out.println("barrier.");});
+		Runnable r1 = () -> {
+			System.out.println("r1 start." + Thread.currentThread().getName());
+			try {
+				barrier.await();
+			} catch (InterruptedException | BrokenBarrierException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("finished.");
+		};
+		
+		var t1 = new Thread(r1, "r-t1");
+		var t2 = new Thread(r1, "r-t2");
+		var t3 = new Thread(r1, "r-t3");
+		
+		if(barrier.isBroken()) {
+			t1.start();
+			t2.start();
+			t3.start();
+		}
+		System.out.println("r-complete");
 	}
 }
