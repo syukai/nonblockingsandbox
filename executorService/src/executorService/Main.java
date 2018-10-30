@@ -35,6 +35,10 @@ public class Main {
 			System.out.println("callable start.[" + Thread.currentThread().getName() + "]");
 			TimeUnit.MILLISECONDS.sleep(300);
 			System.out.println("callable finished.");
+			// ここでshutdownしたらどうなる？ 
+			executorService.shutdownNow();
+			// -> ここでexecutorServiceが終了するので次のexecuteが失敗する
+			//    java.util.concurrent.RejectedExecutionException
 			return "Task's execution";
 		};
 		
@@ -43,7 +47,7 @@ public class Main {
 		callableTasks.add(callableTask);
 		callableTasks.add(callableTask);
 		
-		executorService.execute(runnableTask);
+//		executorService.execute(runnableTask);
 		
 		System.out.println("submit st.");
 		Future<String> future = executorService.submit(callableTask);
@@ -59,6 +63,8 @@ public class Main {
 		
 		try {
 			System.out.println("invokeAny st.");
+			// invokeAnyのタスク内でshutdownNow()したら?
+			// -> ここでexception.(result.がでない) 次のタスクが実行できずにしぬ 
 			String result = executorService.invokeAny(callableTasks);
 			System.out.println("result:" + result);
 		} catch (InterruptedException e) {
@@ -74,6 +80,7 @@ public class Main {
 			List<Future<String>> futures = executorService.invokeAll(callableTasks);
 			futures.forEach(f->{
 				try {
+					// ここでシャットダウンしたらどうなる？ -> すでに処理が終わってるので特になんともない
 					System.out.println(f.get());
 					executorService.shutdownNow();
 				} catch (InterruptedException | ExecutionException e) {
