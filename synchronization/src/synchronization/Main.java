@@ -15,6 +15,12 @@ public class Main {
 	    public void calculate() {
 	        setSum(getSum() + 1);
 	    }
+	    public void directCalculate() {
+	    	sum++;
+	    }
+	    public synchronized void syncDirectCalculate() {
+	    	sum++;
+	    }
 	}
 
 	public static void main(String[] argv) throws InterruptedException {
@@ -27,5 +33,23 @@ public class Main {
 	 
 	    // 1000にならない！！！
 	    System.out.println(summation.getSum());
+	    
+	    summation.setSum(0);
+	    
+	    IntStream.range(0,  1000)
+	    	.forEach(count -> service.submit(summation::directCalculate));
+	    service.awaitTermination(1000, TimeUnit.MILLISECONDS);
+	    // やっぱり1000にならない
+	    System.out.println(summation.getSum());
+	    
+	    summation.setSum(0);
+	    
+	    IntStream.range(0,  1000)
+	    	.forEach(count -> service.submit(summation::syncDirectCalculate));
+	    service.awaitTermination(1000, TimeUnit.MILLISECONDS);
+	    // 1000になる！！！
+	    System.out.println(summation.getSum());
+	    
+	    service.shutdown();
 	}
 }
