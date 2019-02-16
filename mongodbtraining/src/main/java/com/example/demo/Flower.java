@@ -29,10 +29,10 @@ public class Flower {
 	public Integer getId() {
 		return this.id;
 	}
-	// IDのSetterが無いとfindOneできない。なんで？？？
-	public void setId(Integer value) {
-		this.id = value;
-	}
+//	// IDのSetterが無いとfindOneできない。なんで？？？
+//	public void setId(Integer value) {
+//		this.id = value;
+//	}
 	
 	public String getName() {
 		return this.name;
