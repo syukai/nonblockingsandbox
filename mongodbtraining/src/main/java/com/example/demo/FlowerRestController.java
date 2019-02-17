@@ -21,7 +21,8 @@ public class FlowerRestController {
 	Mono<Flower> insert(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("color") String color ){
 		ReactiveMongoTemplate mongoOps = new ReactiveMongoTemplate(MongoClients.create(), "database");
 		
-		return mongoOps.insert(new Flower(id, name, color));
+		return mongoOps.insert(new Flower(id, name, color))
+				.flatMap(p -> mongoOps.findOne(new Query(Criteria.where("id").is(p.getId())), Flower.class));
 	}
 
 	@GetMapping("findOne")
@@ -31,7 +32,7 @@ public class FlowerRestController {
 		return mongoOps.findOne(new Query(Criteria.where("name").is("dalia")), Flower.class);
 	}
 	
-	@GetMapping("findAll")
+	@GetMapping(value="findAll")
 	Flux<Flower> findAll() {
 		ReactiveMongoTemplate mongoOps = new ReactiveMongoTemplate(MongoClients.create(), "database");
 		

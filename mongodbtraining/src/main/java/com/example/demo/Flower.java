@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Flower {
 
+	/**
+	 * finalをつけるとFluxがSubscribeするときにエラーになる。Setterはなくてもいいけどfinalはだめ
+	 */
 	@Id
 	private Integer id;
 	
@@ -28,12 +31,7 @@ public class Flower {
 	
 	public Integer getId() {
 		return this.id;
-	}
-//	// IDのSetterが無いとfindOneできない。なんで？？？
-//	public void setId(Integer value) {
-//		this.id = value;
-//	}
-	
+	}	
 	public String getName() {
 		return this.name;
 	}
