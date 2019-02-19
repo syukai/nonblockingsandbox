@@ -24,6 +24,16 @@ public class FlowerRestController {
 		return mongoOps.insert(new Flower(id, name, color))
 				.flatMap(p -> mongoOps.findOne(new Query(Criteria.where("id").is(p.getId())), Flower.class));
 	}
+	
+	// 違う型でも入っちゃうぜ
+	@GetMapping("insertFrog")
+	Mono<Frog> insert(@RequestParam("id") int id, @RequestParam("name") String name) {
+		
+		ReactiveMongoTemplate mongoOps = new ReactiveMongoTemplate(MongoClients.create(), "database");
+		
+		return mongoOps.insert(new Frog(id, name))
+				;
+	}
 
 	@GetMapping("findOne")
 	Mono<Flower> findOne() {
