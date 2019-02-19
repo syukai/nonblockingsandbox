@@ -48,4 +48,11 @@ public class FlowerRestController {
 		
 		return mongoOps.findAll(Flower.class);
 	}
+	
+	@GetMapping(value="findFrogAll")
+	Flux<Frog> findFrogAll() {
+		ReactiveMongoTemplate mongoOps = new ReactiveMongoTemplate(MongoClients.create(), "database");
+		
+		return mongoOps.findAll(Frog.class);
+	}
 }
