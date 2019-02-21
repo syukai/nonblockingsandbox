@@ -1,7 +1,12 @@
 package com.example.demo;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -16,6 +21,17 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class FlowerRestController {
+	
+	private FlowerPagingRepository flowerPagingRepository;
+	private FlowerReactiveRepository flowerReactiveRepository;
+	
+	FlowerRestController(
+			FlowerPagingRepository flowerPagingRepository
+			,FlowerReactiveRepository flowerReactiveRepository) {
+		this.flowerPagingRepository = flowerPagingRepository;
+		this.flowerReactiveRepository = flowerReactiveRepository;
+	}
+	
 
 	@GetMapping("insert")
 	Mono<Flower> insert(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("color") String color ){
@@ -44,9 +60,10 @@ public class FlowerRestController {
 	
 	@GetMapping(value="findAll")
 	Flux<Flower> findAll() {
-		ReactiveMongoTemplate mongoOps = new ReactiveMongoTemplate(MongoClients.create(), "database");
-		
-		return mongoOps.findAll(Flower.class);
+//		ReactiveMongoTemplate mongoOps = new ReactiveMongoTemplate(MongoClients.create(), "database");
+//		
+//		return mongoOps.findAll(Flower.class);
+		return this.flowerReactiveRepository.findAll();
 	}
 	
 	@GetMapping(value="findFrogAll")
@@ -55,4 +72,16 @@ public class FlowerRestController {
 		
 		return mongoOps.findAll(Frog.class);
 	}
+	
+	@GetMapping(value="findbycolor")
+	Flux<Flower> findByColor(@RequestParam("color") String color) {
+//		return Flux.fromIterable(this.flowerPagingRepository.findByColor(color));
+//		return Flux.fromIterable(this.flowerPagingRepository.findByColor(color, PageRequest.of(0, 2)));
+		return this.flowerReactiveRepository.findByColor(color);
+	}
+	
+//	@GetMapping(value="findpage")
+//	Flux<Flower> findPage() {
+//		return this.flowerReactiveRepository.findAll(PageRequest.of(0, 20));
+//	}
 }

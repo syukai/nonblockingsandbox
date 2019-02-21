@@ -39,4 +39,7 @@ public class Flower {
 	public String getColor() {
 		return this.color;
 	}
+	public void setColor(String value) {
+		this.color = value;
+	}
 }
