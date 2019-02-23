@@ -35,10 +35,11 @@ public class FlowerRestController {
 
 	@GetMapping("insert")
 	Mono<Flower> insert(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("color") String color ){
-		ReactiveMongoTemplate mongoOps = new ReactiveMongoTemplate(MongoClients.create(), "database");
+//		ReactiveMongoTemplate mongoOps = new ReactiveMongoTemplate(MongoClients.create(), "database");
 		
-		return mongoOps.insert(new Flower(id, name, color))
-				.flatMap(p -> mongoOps.findOne(new Query(Criteria.where("id").is(p.getId())), Flower.class));
+//		return mongoOps.insert(new Flower(id, name, color))
+//				.flatMap(p -> mongoOps.findOne(new Query(Criteria.where("id").is(p.getId())), Flower.class));
+		return this.flowerReactiveRepository.save(new Flower(id, name, color));
 	}
 	
 	// 違う型でも入っちゃうぜ
@@ -75,13 +76,6 @@ public class FlowerRestController {
 	
 	@GetMapping(value="findbycolor")
 	Flux<Flower> findByColor(@RequestParam("color") String color) {
-//		return Flux.fromIterable(this.flowerPagingRepository.findByColor(color));
-//		return Flux.fromIterable(this.flowerPagingRepository.findByColor(color, PageRequest.of(0, 2)));
 		return this.flowerReactiveRepository.findByColor(color);
 	}
-	
-//	@GetMapping(value="findpage")
-//	Flux<Flower> findPage() {
-//		return this.flowerReactiveRepository.findAll(PageRequest.of(0, 20));
-//	}
 }
