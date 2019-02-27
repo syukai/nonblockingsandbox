@@ -6,7 +6,7 @@ import com.example.demo.document.Flower;
 
 import reactor.core.publisher.Flux;
 
-public interface FlowerReactiveRepository extends ReactiveCrudRepository<Flower, String> {
+public interface FlowerReactiveRepository extends ReactiveCrudRepository<Flower, Integer> {
 
 	Flux<Flower> findByColor(String color);
 }
