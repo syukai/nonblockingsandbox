@@ -1,10 +1,12 @@
-package com.example.demo;
+package com.example.demo.repository;
 
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import com.example.demo.document.Flower;
 
 import reactor.core.publisher.Flux;
 

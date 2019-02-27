@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.document;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -22,7 +22,7 @@ public class Flower {
 		color = "";
 	}
 	
-	Flower(int id, String name, String color){
+	public Flower(int id, String name, String color){
 		this.id = id;
 		this.name = name;
 		this.color = color;

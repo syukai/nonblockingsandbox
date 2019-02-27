@@ -1,12 +1,5 @@
-package com.example.demo;
+package com.example.demo.controller;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -14,6 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.document.Flower;
+import com.example.demo.document.Frog;
+import com.example.demo.repository.FlowerPagingRepository;
+import com.example.demo.repository.FlowerReactiveRepository;
 import com.mongodb.reactivestreams.client.MongoClients;
 
 import reactor.core.publisher.Flux;
