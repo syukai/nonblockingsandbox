@@ -30,6 +30,7 @@ public class MongoTemplateRestController {
 	// 違う型でも入っちゃうぜ
 	@GetMapping("insertFrog")
 	Mono<Frog> insert(@RequestParam("id") int id, @RequestParam("name") String name) {
+		// 型ごとに別のコレクションに入る
 		ReactiveMongoTemplate mongoOps = new ReactiveMongoTemplate(MongoClients.create(), "database");
 		
 		return mongoOps.insert(new Frog(id, name));

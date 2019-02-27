@@ -38,6 +38,11 @@ public class ReactiveFlowerRestController {
 		return this.flowerReactiveRepository.findAll();
 	}
 	
+	@GetMapping(value="withoutid")
+	Flux<Flower> withoutid() {
+		return this.flowerReactiveRepository.findByName("rose");
+	}
+	
 	
 	@GetMapping(value="findbycolor")
 	Flux<Flower> findByColor(@RequestParam("color") String color) {
